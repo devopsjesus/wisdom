@@ -4,22 +4,22 @@ When working a story that requires authoring a custom resource, there is a tempt
 
 # Concepts
 In this section are links detailing key concepts to grok before authoring a custom resource
-- [What Are Resources](https://docs.microsoft.com/en-us/powershell/dsc/resources/resources)
+- [What Are Resources](https://docs.microsoft.com/en-us/powershell/scripting/dsc/resources/resources)
   - General overview of a DSC resource
-- [Get-Set-Test](https://docs.microsoft.com/en-us/powershell/dsc/resources/get-test-set)
+- [Get-Set-Test](https://docs.microsoft.com/en-us/powershell/scripting/dsc/resources/get-test-set)
   - Overview of the three functions that make up a resource
-- [Single Instance Resources](https://docs.microsoft.com/en-us/powershell/dsc/resources/singleinstance)
+- [Single Instance Resources](https://docs.microsoft.com/en-us/powershell/scripting/dsc/resources/singleinstance)
   - Guidance on authoring a resource that should only be used once in a configuration script
-- [Calling Resource Functions Directly](https://docs.microsoft.com/en-us/powershell/dsc/managing-nodes/directcallresource)
+- [Calling Resource Functions Directly](https://docs.microsoft.com/en-us/powershell/scripting/dsc/managing-nodes/directcallresource)
   - Useful for troubleshooting
-- [Resource Authoring Checklist](https://docs.microsoft.com/en-us/powershell/dsc/resources/resourceauthoringchecklist)
+- [Resource Authoring Checklist](https://docs.microsoft.com/en-us/powershell/scripting/dsc/resources/resourceauthoringchecklist)
   - Also linked in the PR Checklist page as guidance for general development
-- [What are Configurations](https://docs.microsoft.com/en-us/powershell/dsc/configurations/configurations)
+- [What are Configurations](https://docs.microsoft.com/en-us/powershell/scripting/dsc/configurations/configurations)
   - Overview of a DSC Configuration script
-- [Applying Configurations](https://docs.microsoft.com/en-us/powershell/dsc/managing-nodes/apply-get-test)
+- [Applying Configurations](https://docs.microsoft.com/en-us/powershell/scripting/dsc/managing-nodes/apply-get-test)
   - Useful for troubleshooting and general knowledge on how resources ultimately get applied
-- [Partial Configurations](https://docs.microsoft.com/en-us/powershell/dsc/overview/authoringadvanced#partial-configurations)
-  - Currently the only type of configuration in use by RPS and Mission Network
+- [Partial Configurations](https://docs.microsoft.com/en-us/powershell/scripting/dsc/overview/authoringadvanced#partial-configurations)
+  - Currently not a recommended method for deploying configurations
 
 
 # Project Guidelines
@@ -34,7 +34,7 @@ In this section are links detailing key concepts to grok before authoring a cust
     - Much work has been done on this project to add resources to the ActiveDirectoryCsDsc public module, because those requested custom resources were directly related to the deployment and configuration of an AD Certificate Authority.  Even though many of the resources involved certificates, they were not added to the more generic CertificateDsc module, again because they were more directly related to the configuration of a Certificate Authority, not generic certificate administrative activities.
   - It is best to author the new custom resource with minimal changes to the rest of the existing module code, as it is the intent of this project to track and merge back forked public resource modules
 - Author only MOF-based Resources
-  - Only [MOF-based Resources](https://docs.microsoft.com/en-us/powershell/dsc/resources/authoringresourcemof) should only be authored for this project
+  - Only [MOF-based Resources](https://docs.microsoft.com/en-us/powershell/scripting/dsc/resources/authoringresourcemof) should only be authored for this project
     - Able to be tested by Pester, whereas other methods are not
     - Follow the guidelines from the link above to ensure a quality resource is released
   - Since this project only released MOF-based resources, the term "resource" is interchangeable with "MOF-based resource" with the specification defined here to limit confusion.
@@ -43,7 +43,7 @@ In this section are links detailing key concepts to grok before authoring a cust
 ## Define Resource Scope
 - Writing a custom resource can easily become overwhelming as the developer encounters more and more complexities and edge cases, if the resource's scope is not well-defined.
   - Writing the Pester tests before writing code usually helps with this!
-- Resources can generally be viewed as formalized scripts that wrap cmdlets or native commands in a standardized format and later executed by the [LCM](https://docs.microsoft.com/en-us/powershell/dsc/managing-nodes/metaconfig)
+- Resources can generally be viewed as formalized scripts that wrap cmdlets or native commands in a standardized format and later executed by the [LCM](https://docs.microsoft.com/en-us/powershell/scripting/dsc/managing-nodes/metaconfig)
 
 
 ## Define Resource Properties
@@ -77,7 +77,7 @@ In this section are links detailing key concepts to grok before authoring a cust
   - Any additional parameters should be logically ordered by related sets or types as necessary
 
 
-### [Get-TargetResource](https://docs.microsoft.com/en-us/powershell/dsc/resources/get-test-set#get)
+### [Get-TargetResource](https://docs.microsoft.com/en-us/powershell/scripting/dsc/resources/get-test-set#get)
 - Should return the current state of the target node
 - Required properties to return in the Get function hashtable are those with **Key** and **Required** attributes
   - NOTE: This statement is not easily found in the body of existing published documentation, but the error message returned by the LCM - in case a **Key** or **Required** property is not returned - provides this guidance.
@@ -85,7 +85,7 @@ In this section are links detailing key concepts to grok before authoring a cust
 - This function is not called during a consistency check initialized by the LCM (obviously the function will still run via the LCM if it is called from the Test-TargetResource function)
     - Run Get-DscConfiguration to invoke the Get-TargetResource function manually
 
-### [Test-TargetResource](https://docs.microsoft.com/en-us/powershell/dsc/resources/get-test-set#test)
+### [Test-TargetResource](https://docs.microsoft.com/en-us/powershell/scripting/dsc/resources/get-test-set#test)
 - Compares the current state of the system with the desired state (the resource property values defined in the configuration script)
 - Typically calls `Get-TargetResource` at the start of the function to gather information about the resource's current state
 - It is the first function to run when the LCM starts a consistency check
@@ -97,12 +97,12 @@ In this section are links detailing key concepts to grok before authoring a cust
   - Aids in troubleshooting during deployment by generating as much information about the resource state as efficiently possible
     - E.g. If a `Test-TargetResource` function is looping through the resource's properties comparing passed in values to current state, do not return `$false` at the first difference in comparison. Continue looping through the properties and the remainder of the function to continue generating output about the state of each property.
 
-### [Set-TargetResource](https://docs.microsoft.com/en-us/powershell/dsc/resources/get-test-set#set)
+### [Set-TargetResource](https://docs.microsoft.com/en-us/powershell/scripting/dsc/resources/get-test-set#set)
 - This function is usually the least complex to develop
 - Typically checks the `Ensure` property and runs the requisite cmdlet/command to either add or remove the resource (or update property values)
 - Error handling should be implemented with the [Common Resource Helper Module](https://github.com/PowerShell/DscResources/blob/master/StyleGuidelines.md#helper-functions-for-localization) to allow for localized data strings and effective testing
   - Module is currently hosted on the [SqlServerDsc](https://github.com/PowerShell/SqlServerDsc/blob/dev/DSCResources/CommonResourceHelper.psm1) repository but will be migrated to another repository
-- Changes made to the system by this function should generate the same result no matter how many times the function's run ([idempotence](https://docs.microsoft.com/en-us/powershell/dsc/resources/get-test-set#set))
+- Changes made to the system by this function should generate the same result no matter how many times the function's run ([idempotence](https://docs.microsoft.com/en-us/powershell/scripting/dsc/overview/dscforengineers))
 
 ### Helper functions
   - Code that gets repeated within a resource or across multiple resource in the same module should be put in a helper function or script to avoid duplication of code
