@@ -30,7 +30,7 @@ In this section are links detailing key concepts to grok before authoring a cust
   - If there are any questions about using an existing resource module, check with project leadership before making a decision
 - If a repository for a resource module in a similar class as the intended custom resource already exists on GitHub, determine if the custom resource should belong in that **existing public resource module on GitHub**
   - Examples of similar class
-    - A developer would add a new Active Directory related resource to the xActiveDirectory resource module already published on GitHub
+    - A developer would add a new Active Directory related resource to the ActiveDirectoryDsc resource module already published on GitHub
     - Much work has been done on this project to add resources to the ActiveDirectoryCsDsc public module, because those requested custom resources were directly related to the deployment and configuration of an AD Certificate Authority.  Even though many of the resources involved certificates, they were not added to the more generic CertificateDsc module, again because they were more directly related to the configuration of a Certificate Authority, not generic certificate administrative activities.
   - It is best to author the new custom resource with minimal changes to the rest of the existing module code, as it is the intent of this project to track and merge back forked public resource modules
 - Author only MOF-based Resources
