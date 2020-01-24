@@ -100,8 +100,7 @@ In this section are links detailing key concepts to grok before authoring a cust
 ### [Set-TargetResource](https://docs.microsoft.com/en-us/powershell/scripting/dsc/resources/get-test-set#set)
 - This function is usually the least complex to develop
 - Typically checks the `Ensure` property and runs the requisite cmdlet/command to either add or remove the resource (or update property values)
-- Error handling should be implemented with the [Common Resource Helper Module](https://github.com/PowerShell/DscResources/blob/master/StyleGuidelines.md#helper-functions-for-localization) to allow for localized data strings and effective testing
-  - Module is currently hosted on the [SqlServerDsc](https://github.com/PowerShell/SqlServerDsc/blob/dev/DSCResources/CommonResourceHelper.psm1) repository but will be migrated to another repository
+- Error handling should be implemented with the [Common Resource Helper Module](https://github.com/dsccommunity/DscResource.Common) to allow for localized data strings and effective testing
 - Changes made to the system by this function should generate the same result no matter how many times the function's run ([idempotence](https://docs.microsoft.com/en-us/powershell/scripting/dsc/overview/dscforengineers))
 
 ### Helper functions
