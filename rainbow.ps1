@@ -1,14 +1,15 @@
 param
 (
-    $count = 10000,
-    $message = "SO MUCH COLOR"
+    $Count = 10000,
+    $Message = "SO MUCH COLOR"
 )
+
 function ColorMeImpressed
 {
     param
     (
-        $count = 10000,
-        $message = "SO MUCH COLOR"
+        $Count,
+        $Message
     )
 
     $colorList = @(
@@ -30,7 +31,7 @@ function ColorMeImpressed
         "White"
     )
 
-    for ($i = 0; $i -lt $count; $i++)
+    for ($i = 0; $i -lt $Count; $i++)
     {
         $fgColor = Get-Random -Minimum 0 -Maximum ($colorList.Count - 1)
         $bgColor = Get-Random -Minimum 0 -Maximum ($colorList.Count - 1)
@@ -41,8 +42,8 @@ function ColorMeImpressed
 		$bgColor = Get-Random -Minimum 0 -Maximum ($colorList.Count - 2)
 	}
 
-        Write-Host -Object " $message " -ForegroundColor $fgColor -BackgroundColor $bgColor -NoNewline
+        Write-Host -Object " $Message " -ForegroundColor $fgColor -BackgroundColor $bgColor -NoNewline
     }
 }
 
-ColorMeImpressed -count $count -message $message
+ColorMeImpressed -Count $Count -Message $message
