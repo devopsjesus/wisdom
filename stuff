@@ -1,0 +1,8 @@
+
+Mock -CommandName 'Get-AzResource' -MockWith { 
+    $genericObj = New-Object -TypeName 'Microsoft.Azure.Management.ResourceManager.Models.GenericResource'
+    $psResourceObj = New-Object -TypeName Microsoft.Azure.Commands.ResourceManager.Cmdlets.SdkModels.PSResource($genericObj)
+    $psResourceObj.ResourceId = 'thisisafakeid'
+    $psResourceObj
+    } -ModuleName $script:moduleName
+Mock -CommandName 'Remove-AzResource' -ModuleName $script:moduleName
